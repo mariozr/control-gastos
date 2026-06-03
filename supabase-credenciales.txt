@@ -1,0 +1,7 @@
+pass: 6jy5JQocTo2i7uM3
+
+Project URL: https://uhjhyhhlzhllltfmwplz.supabase.co
+
+Publishable key: sb_publishable_cNPgOxCTcHoxanWskiT2Dg_Wsjji-kP
+
+anon public: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVoamh5aGhsemhsbGx0Zm13cGx6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0MDE3NTEsImV4cCI6MjA5NTk3Nzc1MX0.wreGnleemfHmnga3WSkogIRmRhmvH4we2KghUV0RIdU
