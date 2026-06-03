@@ -13,7 +13,6 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import BotonExportar from "./BotonExportar";
 
 const COLORS = [
   "#0088FE",
@@ -40,6 +39,7 @@ export default function GraficosEstadisticos() {
   const [mesesDisponibles, setMesesDisponibles] = useState([]);
   const [mesSeleccionado, setMesSeleccionado] = useState("");
   const [isMobile, setIsMobile] = useState(false);
+  const [mostrarDetalle, setMostrarDetalle] = useState(false);
 
   // Detectar si es móvil
   useEffect(() => {
@@ -50,6 +50,11 @@ export default function GraficosEstadisticos() {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  // Cerrar dropdown al cambiar de gráfico o filtro
+  useEffect(() => {
+    setMostrarDetalle(false);
+  }, [tipoGrafico, filtroMes, mesSeleccionado]);
 
   useEffect(() => {
     cargarDatosEstadisticos();
@@ -94,7 +99,7 @@ export default function GraficosEstadisticos() {
     const mesesArray = Array.from(mesesSet).sort();
     setMesesDisponibles(mesesArray);
 
-    // Filtrar datos por mes si es necesario (usando comparación directa de strings)
+    // Filtrar datos por mes si es necesario
     let datosFiltrados = data;
 
     if (filtroMes === "mesActual") {
@@ -147,7 +152,7 @@ export default function GraficosEstadisticos() {
 
     setGastosPorCategoria(datosCategorias);
 
-    // Procesar datos por mes (todos los meses, sin filtro)
+    // Procesar datos por mes
     const meses = {};
     data.forEach((gasto) => {
       const fechaGasto = gasto.fecha;
@@ -178,7 +183,7 @@ export default function GraficosEstadisticos() {
 
     setGastosPorMes(datosMeses);
 
-    // Procesar datos por forma de pago (con el filtro aplicado)
+    // Procesar datos por forma de pago
     const formasPago = {};
     datosFiltrados.forEach((gasto) => {
       const nombreFormaPago = gasto.forma_pago || "Efectivo";
@@ -243,23 +248,59 @@ export default function GraficosEstadisticos() {
     }).format(value);
   };
 
-  const renderLegendCompacta = (data) => {
+  const renderLegendDropdown = (data, title) => {
+    if (!data || data.length === 0) return null;
+
     return (
       <div className="mt-4 pt-3 border-t border-gray-200">
-        <div className="grid grid-cols-2 gap-x-3 gap-y-1.5">
-          {data.map((item, index) => (
-            <div key={item.name} className="flex items-center gap-1.5 text-xs">
+        <button
+          onClick={() => setMostrarDetalle(!mostrarDetalle)}
+          className="w-full flex items-center justify-between px-3 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
+        >
+          <span className="text-sm font-medium text-gray-700">
+            📊 Ver detalles de {title}
+          </span>
+          <svg
+            className={`w-5 h-5 text-gray-500 transition-transform ${mostrarDetalle ? "rotate-180" : ""}`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </button>
+
+        {mostrarDetalle && (
+          <div className="mt-3 space-y-2 max-h-60 overflow-y-auto">
+            {data.map((item, index) => (
               <div
-                className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                style={{ backgroundColor: COLORS[index % COLORS.length] }}
-              />
-              <span className="text-gray-600 truncate">{item.name}:</span>
-              <span className="font-semibold text-gray-800 ml-auto">
-                {formatCurrency(item.value)}
-              </span>
-            </div>
-          ))}
-        </div>
+                key={item.name}
+                className="flex items-center justify-between p-2 bg-gray-50 rounded-lg"
+              >
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                  <div
+                    className="w-3 h-3 rounded-full flex-shrink-0"
+                    style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                  />
+                  <span
+                    className="text-sm text-gray-700 truncate"
+                    title={item.name}
+                  >
+                    {item.name}
+                  </span>
+                </div>
+                <span className="font-semibold text-gray-800 ml-2 flex-shrink-0">
+                  {formatCurrency(item.value)}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     );
   };
@@ -407,6 +448,7 @@ export default function GraficosEstadisticos() {
         </div>
       )}
 
+      {/* Gráfico por Categoría */}
       {tipoGrafico === "categoria" && (
         <div>
           <div className="h-64 sm:h-80 md:h-96">
@@ -418,9 +460,9 @@ export default function GraficosEstadisticos() {
                   cy="50%"
                   labelLine={false}
                   label={
-                    isMobile
-                      ? false
-                      : ({ percent }) => `${(percent * 100).toFixed(0)}%`
+                    !isMobile
+                      ? ({ percent }) => `${(percent * 100).toFixed(0)}%`
+                      : false
                   }
                   outerRadius={isMobile ? 80 : 120}
                   fill="#8884d8"
@@ -438,7 +480,7 @@ export default function GraficosEstadisticos() {
             </ResponsiveContainer>
           </div>
           {isMobile ? (
-            renderLegendCompacta(gastosPorCategoria)
+            renderLegendDropdown(gastosPorCategoria, "categorías")
           ) : (
             <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-2">
               {gastosPorCategoria.map((item, index) => (
@@ -461,6 +503,7 @@ export default function GraficosEstadisticos() {
         </div>
       )}
 
+      {/* Gráfico por Mes */}
       {tipoGrafico === "mes" && (
         <div className="h-64 sm:h-80 md:h-96">
           <ResponsiveContainer width="100%" height="100%">
@@ -482,6 +525,7 @@ export default function GraficosEstadisticos() {
         </div>
       )}
 
+      {/* Gráfico por Forma de Pago */}
       {tipoGrafico === "formaPago" && (
         <div>
           <div className="h-64 sm:h-80 md:h-96">
@@ -493,9 +537,9 @@ export default function GraficosEstadisticos() {
                   cy="50%"
                   labelLine={false}
                   label={
-                    isMobile
-                      ? false
-                      : ({ percent }) => `${(percent * 100).toFixed(0)}%`
+                    !isMobile
+                      ? ({ percent }) => `${(percent * 100).toFixed(0)}%`
+                      : false
                   }
                   outerRadius={isMobile ? 80 : 120}
                   fill="#8884d8"
@@ -512,10 +556,12 @@ export default function GraficosEstadisticos() {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          {isMobile && renderLegendCompacta(gastosPorFormaPago)}
+          {isMobile &&
+            renderLegendDropdown(gastosPorFormaPago, "formas de pago")}
         </div>
       )}
 
+      {/* Gráfico de Tendencia por Forma de Pago */}
       {tipoGrafico === "tendenciaFormaPago" && (
         <div className="h-64 sm:h-80 md:h-96">
           <ResponsiveContainer width="100%" height="100%">
@@ -549,6 +595,7 @@ export default function GraficosEstadisticos() {
         </div>
       )}
 
+      {/* Resumen responsive */}
       <div className="mt-6 p-3 md:p-4 bg-gray-50 rounded-lg">
         <h3 className="font-semibold text-gray-700 mb-2 text-sm md:text-base">
           Resumen
