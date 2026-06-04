@@ -334,7 +334,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
                   type="button"
                   onClick={agregarNuevaCategoria}
                   disabled={loading}
-                  className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition whitespace-nowrap"
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition whitespace-nowrap dark:bg-gray-400 dark:text-gray-200 dark:hover:bg-gray-600"
                 >
                   Agregar
                 </button>
@@ -344,7 +344,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
                     setMostrarInputNueva(false);
                     setNuevaCategoria("");
                   }}
-                  className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition"
+                  className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
                 >
                   Cancelar
                 </button>
@@ -369,7 +369,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
               <button
                 type="button"
                 onClick={() => setMostrarInputNueva(true)}
-                className="bg-green-600 text-white px-3 py-2 rounded-md hover:bg-green-700 transition flex items-center justify-center min-w-[42px]"
+                className="bg-blue-600 text-white px-3 py-2 rounded-md hover:bg-blue-700 transition flex items-center justify-center min-w-[42px] dark:bg-gray-400 dark:text-gray-200 dark:hover:bg-gray-600"
                 title="Agregar nueva categoría"
               >
                 <span className="text-xl font-bold">+</span>
@@ -399,7 +399,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
                   type="button"
                   onClick={agregarNuevaFormaPago}
                   disabled={loading}
-                  className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition whitespace-nowrap"
+                  className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition whitespace-nowrap dark:bg-gray-400 dark:text-gray-200 dark:hover:bg-gray-600"
                 >
                   Agregar
                 </button>
@@ -410,7 +410,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
                     setNuevaFormaPago("");
                     setColorNuevaFormaPago("#10B981");
                   }}
-                  className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition"
+                  className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
                 >
                   Cancelar
                 </button>
@@ -478,7 +478,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
                 <button
                   type="button"
                   onClick={() => setMostrarInputNuevaPago(true)}
-                  className="bg-purple-600 text-white px-3 py-2 rounded-md hover:bg-purple-700 transition flex items-center justify-center min-w-[42px]"
+                  className="bg-blue-600 text-white px-3 py-2 rounded-md hover:bg-blue-700 transition flex items-center justify-center min-w-[42px] dark:bg-gray-400 dark:text-gray-200 dark:hover:bg-gray-600"
                   title="Agregar nueva forma de pago"
                 >
                   <span className="text-xl font-bold">+</span>
@@ -519,7 +519,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition disabled:bg-blue-300 disabled:cursor-not-allowed dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700 dark:disabled:bg-blue-300 dark:disabled:cursor-not-allowed"
+          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition disabled:bg-blue-300 disabled:cursor-not-allowed dark:bg-gray-400 dark:text-gray-200 dark:hover:bg-gray-600 dark:disabled:bg-gray-300 dark:disabled:cursor-not-allowed"
         >
           {loading ? "Agregando..." : "Agregar Gasto"}
         </button>

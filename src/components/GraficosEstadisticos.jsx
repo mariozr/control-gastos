@@ -255,13 +255,13 @@ export default function GraficosEstadisticos() {
       <div className="mt-4 pt-3 border-t border-gray-200">
         <button
           onClick={() => setMostrarDetalle(!mostrarDetalle)}
-          className="w-full flex items-center justify-between px-3 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
+          className="w-full flex items-center justify-between px-3 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition dark:bg-gray-600 dark:text-gray-400 dark:hover:bg-gray-600"
         >
-          <span className="text-sm font-medium text-gray-700">
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
             📊 Ver detalles de {title}
           </span>
           <svg
-            className={`w-5 h-5 text-gray-500 transition-transform ${mostrarDetalle ? "rotate-180" : ""}`}
+            className={`w-5 h-5 text-gray-500 dark:text-gray-300 transition-transform ${mostrarDetalle ? "rotate-180" : ""}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -280,7 +280,7 @@ export default function GraficosEstadisticos() {
             {data.map((item, index) => (
               <div
                 key={item.name}
-                className="flex items-center justify-between p-2 bg-gray-50 rounded-lg"
+                className="flex items-center justify-between p-2 bg-gray-50 rounded-lg dark:bg-gray-600 dark:text-gray-400"
               >
                 <div className="flex items-center gap-2 flex-1 min-w-0">
                   <div
@@ -288,13 +288,13 @@ export default function GraficosEstadisticos() {
                     style={{ backgroundColor: COLORS[index % COLORS.length] }}
                   />
                   <span
-                    className="text-sm text-gray-700 truncate"
+                    className="text-sm text-gray-700 truncate dark:text-gray-300"
                     title={item.name}
                   >
                     {item.name}
                   </span>
                 </div>
-                <span className="font-semibold text-gray-800 ml-2 flex-shrink-0">
+                <span className="font-semibold text-gray-800 ml-2 flex-shrink-0 dark:text-gray-300">
                   {formatCurrency(item.value)}
                 </span>
               </div>
@@ -344,9 +344,9 @@ export default function GraficosEstadisticos() {
   }
 
   return (
-    <div className="bg-white p-4 md:p-6 rounded-lg shadow-md mb-6 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500">
+    <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg shadow-md mb-6 transition-colors duration-200">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
-        <h2 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-400">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white">
           Estadísticas
         </h2>
 
@@ -359,7 +359,7 @@ export default function GraficosEstadisticos() {
                 setMesSeleccionado("");
               }
             }}
-            className="px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
+            className="px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-blue-500"
           >
             <option value="todos">Todos los períodos</option>
             <option value="mesActual">Mes actual</option>
@@ -373,7 +373,7 @@ export default function GraficosEstadisticos() {
             <select
               value={mesSeleccionado}
               onChange={(e) => setMesSeleccionado(e.target.value)}
-              className="px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-blue-500"
             >
               <option value="">Seleccionar mes</option>
               {mesesDisponibles.map((mesKey) => (
@@ -391,8 +391,8 @@ export default function GraficosEstadisticos() {
           onClick={() => setTipoGrafico("categoria")}
           className={`px-3 md:px-4 py-1.5 md:py-2 rounded-md transition text-xs md:text-sm whitespace-nowrap ${
             tipoGrafico === "categoria"
-              ? "bg-blue-600 text-white"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              ? "bg-blue-600 text-white dark:bg-gray-400 dark:text-gray-200 dark:hover:bg-gray-600"
+              : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
           }`}
         >
           Por Categoría
@@ -401,8 +401,8 @@ export default function GraficosEstadisticos() {
           onClick={() => setTipoGrafico("mes")}
           className={`px-3 md:px-4 py-1.5 md:py-2 rounded-md transition text-xs md:text-sm whitespace-nowrap ${
             tipoGrafico === "mes"
-              ? "bg-blue-600 text-white"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              ? "bg-blue-600 text-white dark:bg-gray-400 dark:text-gray-200 dark:hover:bg-gray-600"
+              : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
           }`}
         >
           Por Mes
@@ -411,8 +411,8 @@ export default function GraficosEstadisticos() {
           onClick={() => setTipoGrafico("formaPago")}
           className={`px-3 md:px-4 py-1.5 md:py-2 rounded-md transition text-xs md:text-sm whitespace-nowrap ${
             tipoGrafico === "formaPago"
-              ? "bg-blue-600 text-white"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              ? "bg-blue-600 text-white dark:bg-gray-400 dark:text-gray-200 dark:hover:bg-gray-600"
+              : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
           }`}
         >
           Por Forma de Pago
@@ -421,8 +421,8 @@ export default function GraficosEstadisticos() {
           onClick={() => setTipoGrafico("tendenciaFormaPago")}
           className={`px-3 md:px-4 py-1.5 md:py-2 rounded-md transition text-xs md:text-sm whitespace-nowrap ${
             tipoGrafico === "tendenciaFormaPago"
-              ? "bg-blue-600 text-white"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              ? "bg-blue-600 text-white dark:bg-gray-400 dark:text-gray-200 dark:hover:bg-gray-600"
+              : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
           }`}
         >
           Tendencia por Pago
@@ -430,7 +430,7 @@ export default function GraficosEstadisticos() {
       </div>
 
       {filtroMes !== "todos" && (
-        <div className="mb-4 p-2 bg-blue-50 rounded-lg text-sm text-blue-700">
+        <div className="mb-4 p-2 bg-blue-50 rounded-lg text-sm text-blue-700 dark:bg-blue-900 dark:text-blue-200">
           📊 Mostrando datos de:{" "}
           <strong>
             {filtroMes === "mesActual" && "este mes"}
@@ -442,7 +442,7 @@ export default function GraficosEstadisticos() {
           {filtroMes !== "especifico" && (
             <button
               onClick={() => setFiltroMes("todos")}
-              className="ml-2 text-blue-500 hover:text-blue-700 underline"
+              className="ml-2 text-blue-500 hover:text-blue-700 underline dark:text-gray-400 dark:hover:text-blue-600"
             >
               Limpiar filtro
             </button>
@@ -494,8 +494,10 @@ export default function GraficosEstadisticos() {
                     className="w-3 h-3 rounded-full"
                     style={{ backgroundColor: COLORS[index % COLORS.length] }}
                   />
-                  <span className="text-gray-600 truncate">{item.name}:</span>
-                  <span className="font-semibold">
+                  <span className="text-gray-600 truncate dark:text-gray-300">
+                    {item.name}:
+                  </span>
+                  <span className="font-semibold dark:text-gray-300">
                     {formatCurrency(item.value)}
                   </span>
                 </div>
@@ -604,19 +606,21 @@ export default function GraficosEstadisticos() {
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
           <div>
-            <p className="text-xs md:text-sm text-gray-600">Total de gastos</p>
-            <p className="text-lg md:text-xl font-bold text-gray-800">
+            <p className="text-xs md:text-sm text-gray-600 dark:text-gray-300">
+              Total de gastos
+            </p>
+            <p className="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-300">
               {formatCurrency(
                 gastosPorCategoria.reduce((sum, item) => sum + item.value, 0),
               )}
             </p>
           </div>
           <div>
-            <p className="text-xs md:text-sm text-gray-600">
+            <p className="text-xs md:text-sm text-gray-600 dark:text-gray-300">
               Categoría con más gastos
             </p>
             <p
-              className="text-sm md:text-xl font-bold text-gray-800 truncate"
+              className="text-sm md:text-xl font-bold text-gray-800 truncate dark:text-gray-300"
               title={
                 gastosPorCategoria.length > 0 &&
                 gastosPorCategoria.reduce(
@@ -633,11 +637,11 @@ export default function GraficosEstadisticos() {
             </p>
           </div>
           <div>
-            <p className="text-xs md:text-sm text-gray-600">
+            <p className="text-xs md:text-sm text-gray-600 dark:text-gray-300">
               Forma de pago más usada
             </p>
             <p
-              className="text-sm md:text-xl font-bold text-gray-800 truncate"
+              className="text-sm md:text-xl font-bold text-gray-800 truncate dark:text-gray-300"
               title={
                 gastosPorFormaPago.length > 0 &&
                 gastosPorFormaPago.reduce(

@@ -363,8 +363,7 @@ export default function ListaGastos({ onGastoEliminado }) {
 
   return (
     <>
-      <div className="bg-white dark:bg-gray-800 dark:text-white p-6 rounded-lg shadow-md">
-        {/* <div className="flex justify-between items-center mb-4"> */}
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md transition-colors duration-200">
         <div className="mb-4">
           <div className="flex justify-between items-start">
             <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
@@ -384,18 +383,17 @@ export default function ListaGastos({ onGastoEliminado }) {
           <div className="mt-3 flex justify-end">
             <BotonExportar filtros={filtrosExportar} />
           </div>
-          {/* </div> */}
         </div>
 
         <div className="space-y-4 mb-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
+            <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-400">
               Categoría
             </label>
             <select
               value={filtroCategoria}
               onChange={(e) => setFiltroCategoria(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             >
               <option value="todos">Todas las categorías</option>
               {categoriasDisponibles.map((cat) => (
@@ -407,13 +405,13 @@ export default function ListaGastos({ onGastoEliminado }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
+            <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-400">
               Forma de Pago
             </label>
             <select
               value={filtroFormaPago}
               onChange={(e) => setFiltroFormaPago(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             >
               <option value="todas">Todas las formas de pago</option>
               {formasPagoDisponibles.map((fp) => (
@@ -433,8 +431,8 @@ export default function ListaGastos({ onGastoEliminado }) {
                 onClick={() => handleFiltroTiempoChange("todos")}
                 className={`px-3 py-2 rounded-md transition ${
                   filtroTiempo === "todos"
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-200 dark:text-gray-700 dark:hover:bg-gray-300"
+                    ? "bg-blue-600 text-white dark:bg-gray-400 dark:text-gray-200 dark:hover:bg-gray-600"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
                 }`}
               >
                 Mes actual
@@ -443,8 +441,8 @@ export default function ListaGastos({ onGastoEliminado }) {
                 onClick={() => handleFiltroTiempoChange("semana")}
                 className={`px-3 py-2 rounded-md transition ${
                   filtroTiempo === "semana"
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-200 dark:text-gray-700 dark:hover:bg-gray-300"
+                    ? "bg-blue-600 text-white dark:bg-gray-400 dark:text-gray-200 dark:hover:bg-gray-600"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
                 }`}
               >
                 Por Semana
@@ -453,8 +451,8 @@ export default function ListaGastos({ onGastoEliminado }) {
                 onClick={() => handleFiltroTiempoChange("mes")}
                 className={`px-3 py-2 rounded-md transition ${
                   filtroTiempo === "mes"
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-200 dark:text-gray-700 dark:hover:bg-gray-300"
+                    ? "bg-blue-600 text-white dark:bg-gray-400 dark:text-gray-200 dark:hover:bg-gray-600"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
                 }`}
               >
                 Por Mes
@@ -463,8 +461,8 @@ export default function ListaGastos({ onGastoEliminado }) {
                 onClick={() => handleFiltroTiempoChange("personalizado")}
                 className={`px-3 py-2 rounded-md transition ${
                   filtroTiempo === "personalizado"
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-200 dark:text-gray-700 dark:hover:bg-gray-300"
+                    ? "bg-blue-600 text-white dark:bg-gray-400 dark:text-gray-200 dark:hover:bg-gray-600"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
                 }`}
               >
                 Personalizado
@@ -475,7 +473,7 @@ export default function ListaGastos({ onGastoEliminado }) {
               <select
                 value={semanaSeleccionada}
                 onChange={(e) => setSemanaSeleccionada(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-blue-500"
               >
                 <option value="">Seleccionar semana</option>
                 {fechasDisponibles.semanas.map((semana) => (
@@ -490,7 +488,7 @@ export default function ListaGastos({ onGastoEliminado }) {
               <select
                 value={mesSeleccionado}
                 onChange={(e) => setMesSeleccionado(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500 dark:border-gray-200"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-blue-500"
               >
                 <option value="">Seleccionar mes</option>
                 {fechasDisponibles.meses.map((mesKey) => (
@@ -512,7 +510,7 @@ export default function ListaGastos({ onGastoEliminado }) {
                       type="date"
                       value={fechaInicio}
                       onChange={(e) => setFechaInicio(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-blue-500"
                     />
                   </div>
                   <div>
@@ -523,13 +521,13 @@ export default function ListaGastos({ onGastoEliminado }) {
                       type="date"
                       value={fechaFin}
                       onChange={(e) => setFechaFin(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-blue-500"
                     />
                   </div>
                 </div>
                 <button
                   onClick={limpiarFiltroPersonalizado}
-                  className="w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600 transition dark:bg-gray-200 dark:text-gray-700 dark:hover:bg-gray-300"
+                  className="w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600 transition dark:bg-gray-400 dark:text-gray-200 dark:hover:bg-gray-600"
                 >
                   Limpiar filtros
                 </button>
@@ -539,9 +537,11 @@ export default function ListaGastos({ onGastoEliminado }) {
         </div>
 
         {loading ? (
-          <p className="text-center text-gray-500">Cargando...</p>
+          <p className="text-center text-gray-500 dark:text-gray-400">
+            Cargando...
+          </p>
         ) : gastos.length === 0 ? (
-          <p className="text-center text-gray-500">
+          <p className="text-center text-gray-500 dark:text-gray-400">
             No hay gastos registrados con los filtros seleccionados
           </p>
         ) : (
@@ -553,14 +553,14 @@ export default function ListaGastos({ onGastoEliminado }) {
               return (
                 <div
                   key={gasto.id}
-                  className="flex justify-between items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 dark:bg-gray-200 dark:text-gray-700 dark:hover:bg-gray-300"
+                  className="flex justify-between items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                 >
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
                       <span className="font-semibold text-gray-800 dark:text-gray-400">
                         {gasto.descripcion}
                       </span>
-                      <span className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded dark:bg-gray-200 dark:text-gray-700 dark:hover:bg-gray-300">
+                      <span className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600">
                         {gasto.categoria}
                       </span>
                       <span
@@ -607,8 +607,8 @@ export default function ListaGastos({ onGastoEliminado }) {
 
       {/* Modal de Edición */}
       {mostrarModalEdicion && editandoGasto && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center p-4 border-b">
               <h3 className="text-xl font-bold text-gray-800 dark:text-gray-400">
                 Editar Gasto
@@ -626,7 +626,7 @@ export default function ListaGastos({ onGastoEliminado }) {
 
             <div className="p-4 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-400">
                   Descripción
                 </label>
                 <input
@@ -634,13 +634,13 @@ export default function ListaGastos({ onGastoEliminado }) {
                   name="descripcion"
                   value={editandoGasto.descripcion}
                   onChange={handleEditChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   placeholder="Ej: Compra supermercado"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-400">
                   Monto
                 </label>
                 <input
@@ -650,20 +650,20 @@ export default function ListaGastos({ onGastoEliminado }) {
                   onChange={handleEditChange}
                   step="0.01"
                   min="0.01"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   placeholder="0.00"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-400">
                   Categoría
                 </label>
                 <select
                   name="categoria"
                   value={editandoGasto.categoria}
                   onChange={handleEditChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 >
                   {categoriasDisponibles.map((cat) => (
                     <option key={cat} value={cat}>
@@ -674,14 +674,14 @@ export default function ListaGastos({ onGastoEliminado }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-400">
                   Forma de Pago
                 </label>
                 <select
                   name="forma_pago"
                   value={editandoGasto.forma_pago}
                   onChange={handleEditChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 >
                   {formasPagoDisponibles.map((fp) => (
                     <option key={fp} value={fp}>
@@ -692,7 +692,7 @@ export default function ListaGastos({ onGastoEliminado }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-400">
                   Fecha
                 </label>
                 <input
@@ -700,7 +700,7 @@ export default function ListaGastos({ onGastoEliminado }) {
                   name="fecha"
                   value={editandoGasto.fecha}
                   onChange={handleEditChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
             </div>
@@ -709,7 +709,7 @@ export default function ListaGastos({ onGastoEliminado }) {
               <button
                 onClick={guardarEdicion}
                 disabled={editando}
-                className="flex-1 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:bg-blue-300 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
+                className="flex-1 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:bg-blue-300 dark:bg-gray-700 dark:text-gray-200 dark:focus:ring-blue-500"
               >
                 {editando ? "Guardando..." : "Guardar cambios"}
               </button>
@@ -718,7 +718,7 @@ export default function ListaGastos({ onGastoEliminado }) {
                   setMostrarModalEdicion(false);
                   setEditandoGasto(null);
                 }}
-                className="flex-1 bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600 transition dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
+                className="flex-1 bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600 transition dark:bg-gray-700 dark:text-gray-200 dark:focus:ring-blue-500"
               >
                 Cancelar
               </button>
