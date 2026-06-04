@@ -1,8 +1,8 @@
+// ListaGastos.jsx
 import { useEffect, useState } from "react";
 import { supabase } from "../config/supabase";
 import { formatearMonto } from "../utils/formatearMonto";
 import BotonExportar from "./BotonExportar";
-import { useToast } from "../hooks/useToast";
 
 export default function ListaGastos({
   onGastoEliminado,
@@ -14,6 +14,10 @@ export default function ListaGastos({
   const [totalMensual, setTotalMensual] = useState(0);
   const [mostrarTotalMensual, setMostrarTotalMensual] = useState(true);
   const [loading, setLoading] = useState(true);
+
+  // NUEVO: Estado para el buscador
+  const [busquedaTexto, setBusquedaTexto] = useState("");
+
   const [filtroCategoria, setFiltroCategoria] = useState("todos");
   const [filtroFormaPago, setFiltroFormaPago] = useState("todas");
   const [filtroTiempo, setFiltroTiempo] = useState("todos");
@@ -37,7 +41,6 @@ export default function ListaGastos({
     fechaFin: "",
   });
   const [isMobile, setIsMobile] = useState(false);
-  const { toast, showToast, hideToast } = useToast();
 
   // Estados para edición
   const [editandoGasto, setEditandoGasto] = useState(null);
@@ -143,7 +146,7 @@ export default function ListaGastos({
     if (formaPago && formaPago.color) {
       return { bg: `${formaPago.color}20`, text: formaPago.color };
     }
-    return { bg: "#E5E7EB", text: "#6B7280" };
+    return { bg: "#E5EBEF", text: "#6B7280" };
   };
 
   const cargarGastos = async () => {
@@ -164,78 +167,121 @@ export default function ListaGastos({
     const { data, error } = await query;
 
     if (error) {
-      console.error("Error:", error);
-      alert("Error al cargar gastos: " + error.message);
-    } else {
-      let gastosFiltrados = data || [];
-      let gastosMensuales = [];
+      onError("Error al cargar gastos: " + error.message);
+      setLoading(false);
+      return;
+    }
 
-      // Calcular gastos del mes actual (sin ningún filtro de tiempo)
-      const mesActual = getMesActual();
-      gastosMensuales = (data || []).filter((gasto) => {
+    let gastosFiltrados = data || [];
+    let gastosMensuales = [];
+
+    // Calcular gastos del mes actual (sin ningún filtro de tiempo)
+    const mesActual = getMesActual();
+    gastosMensuales = (data || []).filter((gasto) => {
+      const fechaGasto = gasto.fecha;
+      const añoGasto = fechaGasto.substring(0, 4);
+      const mesGasto = fechaGasto.substring(5, 7);
+      return `${añoGasto}-${mesGasto}` === mesActual;
+    });
+
+    // NUEVO: Aplicar filtro de búsqueda por texto
+    if (busquedaTexto.trim()) {
+      const textoBusqueda = busquedaTexto.toLowerCase().trim();
+      gastosFiltrados = gastosFiltrados.filter((gasto) => {
+        // Buscar en descripción
+        if (gasto.descripcion?.toLowerCase().includes(textoBusqueda))
+          return true;
+        // Buscar en categoría
+        if (gasto.categoria?.toLowerCase().includes(textoBusqueda)) return true;
+        // Buscar en forma de pago
+        if (gasto.forma_pago?.toLowerCase().includes(textoBusqueda))
+          return true;
+        // Buscar en monto (convertido a string)
+        if (gasto.monto?.toString().includes(textoBusqueda)) return true;
+        // Buscar en fecha formateada
+        const fechaFormateada = formatearFecha(gasto.fecha);
+        if (fechaFormateada.includes(textoBusqueda)) return true;
+        return false;
+      });
+    }
+
+    // Aplicar filtros de tiempo a los gastos mostrados
+    if (filtroTiempo === "semana" && semanaSeleccionada) {
+      const [año, semanaNum] = semanaSeleccionada.split("-Semana ");
+      gastosFiltrados = gastosFiltrados.filter((gasto) => {
+        const fecha = new Date(gasto.fecha);
+        const semana = getSemana(fecha);
+        return (
+          fecha.getFullYear() === parseInt(año) &&
+          semana === parseInt(semanaNum)
+        );
+      });
+    } else if (filtroTiempo === "mes" && mesSeleccionado) {
+      const [año, mes] = mesSeleccionado.split("-");
+      gastosFiltrados = gastosFiltrados.filter((gasto) => {
         const fechaGasto = gasto.fecha;
         const añoGasto = fechaGasto.substring(0, 4);
         const mesGasto = fechaGasto.substring(5, 7);
-        return `${añoGasto}-${mesGasto}` === mesActual;
+        return añoGasto === año && mesGasto === mes;
       });
-
-      // Aplicar filtros de tiempo a los gastos mostrados
-      if (filtroTiempo === "semana" && semanaSeleccionada) {
-        const [año, semanaNum] = semanaSeleccionada.split("-Semana ");
-        gastosFiltrados = gastosFiltrados.filter((gasto) => {
-          const fecha = new Date(gasto.fecha);
-          const semana = getSemana(fecha);
-          return (
-            fecha.getFullYear() === parseInt(año) &&
-            semana === parseInt(semanaNum)
-          );
-        });
-      } else if (filtroTiempo === "mes" && mesSeleccionado) {
-        const [año, mes] = mesSeleccionado.split("-");
-        gastosFiltrados = gastosFiltrados.filter((gasto) => {
-          const fechaGasto = gasto.fecha;
-          const añoGasto = fechaGasto.substring(0, 4);
-          const mesGasto = fechaGasto.substring(5, 7);
-          return añoGasto === año && mesGasto === mes;
-        });
-      } else if (filtroTiempo === "personalizado" && fechaInicio && fechaFin) {
-        gastosFiltrados = gastosFiltrados.filter((gasto) => {
-          const fechaGasto = gasto.fecha;
-          return fechaGasto >= fechaInicio && fechaGasto <= fechaFin;
-        });
-      }
-
-      // Si no hay filtros de tiempo, mostrar los gastos del mes actual
-      if (
-        filtroTiempo === "todos" &&
-        !semanaSeleccionada &&
-        !mesSeleccionado &&
-        !fechaInicio &&
-        !fechaFin
-      ) {
-        setMostrarTotalMensual(true);
-        // Los gastos mostrados también deberían ser los del mes actual
-        gastosFiltrados = gastosMensuales;
-      } else {
-        setMostrarTotalMensual(false);
-      }
-
-      const fechas = obtenerFechasDisponibles(data || []);
-      setFechasDisponibles(fechas);
-
-      setGastos(gastosFiltrados);
-      const suma = gastosFiltrados.reduce((acc, gasto) => acc + gasto.monto, 0);
-      setTotal(suma);
-
-      // Calcular total mensual (mes actual, sin filtros)
-      const sumaMensual = gastosMensuales.reduce(
-        (acc, gasto) => acc + gasto.monto,
-        0,
-      );
-      setTotalMensual(sumaMensual);
+    } else if (filtroTiempo === "personalizado" && fechaInicio && fechaFin) {
+      gastosFiltrados = gastosFiltrados.filter((gasto) => {
+        const fechaGasto = gasto.fecha;
+        return fechaGasto >= fechaInicio && fechaGasto <= fechaFin;
+      });
     }
+
+    // Si no hay filtros de tiempo, mostrar los gastos del mes actual
+    if (
+      filtroTiempo === "todos" &&
+      !semanaSeleccionada &&
+      !mesSeleccionado &&
+      !fechaInicio &&
+      !fechaFin
+    ) {
+      setMostrarTotalMensual(true);
+      // Los gastos mostrados también deberían ser los del mes actual
+      gastosFiltrados = gastosMensuales;
+      // NUEVO: Aplicar búsqueda también a los gastos del mes actual
+      if (busquedaTexto.trim()) {
+        const textoBusqueda = busquedaTexto.toLowerCase().trim();
+        gastosFiltrados = gastosFiltrados.filter((gasto) => {
+          if (gasto.descripcion?.toLowerCase().includes(textoBusqueda))
+            return true;
+          if (gasto.categoria?.toLowerCase().includes(textoBusqueda))
+            return true;
+          if (gasto.forma_pago?.toLowerCase().includes(textoBusqueda))
+            return true;
+          if (gasto.monto?.toString().includes(textoBusqueda)) return true;
+          const fechaFormateada = formatearFecha(gasto.fecha);
+          if (fechaFormateada.includes(textoBusqueda)) return true;
+          return false;
+        });
+      }
+    } else {
+      setMostrarTotalMensual(false);
+    }
+
+    const fechas = obtenerFechasDisponibles(data || []);
+    setFechasDisponibles(fechas);
+
+    setGastos(gastosFiltrados);
+    const suma = gastosFiltrados.reduce((acc, gasto) => acc + gasto.monto, 0);
+    setTotal(suma);
+
+    // Calcular total mensual (mes actual, sin filtros)
+    const sumaMensual = gastosMensuales.reduce(
+      (acc, gasto) => acc + gasto.monto,
+      0,
+    );
+    setTotalMensual(sumaMensual);
     setLoading(false);
   };
+
+  // Actualizar cuando cambie la búsqueda
+  useEffect(() => {
+    cargarGastos();
+  }, [busquedaTexto]); // NUEVO: Agregar dependencia
 
   useEffect(() => {
     cargarCategorias();
@@ -281,11 +327,15 @@ export default function ListaGastos({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  // NUEVO: Función para limpiar el buscador
+  const limpiarBuscador = () => {
+    setBusquedaTexto("");
+  };
+
   const eliminarGasto = async (id) => {
     if (confirm("¿Estás seguro de eliminar este gasto?")) {
       const { error } = await supabase.from("gastos").delete().eq("id", id);
       if (error) {
-        /* alert("Error al eliminar: " + error.message); */
         onError("Error al eliminar: " + error.message);
       } else {
         cargarGastos();
@@ -310,13 +360,11 @@ export default function ListaGastos({
 
   const guardarEdicion = async () => {
     if (!editandoGasto.descripcion.trim()) {
-      /* alert("Por favor ingresa una descripción"); */
       onError("Por favor ingresa una descripción");
       return;
     }
 
     if (parseFloat(editandoGasto.monto) <= 0) {
-      /* alert("Por favor ingresa un monto válido"); */
       onError("Por favor ingresa un monto válido");
       return;
     }
@@ -335,15 +383,14 @@ export default function ListaGastos({
       .eq("id", editandoGasto.id);
 
     if (error) {
-      console.error("Error al editar:", error);
-      /* alert("Error al editar gasto: " + error.message); */
       onError("Error al editar gasto: " + error.message);
     } else {
-      /* alert("Gasto editado correctamente"); */
-      onGastoEditado("Gasto editado correctamente", "success");
       setMostrarModalEdicion(false);
       setEditandoGasto(null);
       cargarGastos();
+      if (onGastoEditado) {
+        onGastoEditado();
+      }
     }
     setEditando(false);
   };
@@ -391,6 +438,62 @@ export default function ListaGastos({
           <div className="mt-3 flex justify-end">
             <BotonExportar filtros={filtrosExportar} />
           </div>
+        </div>
+
+        {/* NUEVO: Buscador por texto */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
+            🔍 Buscar gastos
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg
+                className="h-5 w-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
+            <input
+              type="text"
+              placeholder="Buscar por descripción, categoría, forma de pago, monto o fecha..."
+              value={busquedaTexto}
+              onChange={(e) => setBusquedaTexto(e.target.value)}
+              className="w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            />
+            {busquedaTexto && (
+              <button
+                onClick={limpiarBuscador}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+              >
+                <svg
+                  className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            )}
+          </div>
+          {busquedaTexto && (
+            <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+              Mostrando {gastos.length} resultado(s) para "{busquedaTexto}"
+            </div>
+          )}
         </div>
 
         <div className="space-y-4 mb-6">
@@ -549,15 +652,62 @@ export default function ListaGastos({
             Cargando...
           </p>
         ) : gastos.length === 0 ? (
-          <p className="text-center text-gray-500 dark:text-gray-400">
-            No hay gastos registrados con los filtros seleccionados
-          </p>
+          <div className="text-center py-8">
+            <svg
+              className="mx-auto h-12 w-12 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+            <p className="mt-2 text-gray-500 dark:text-gray-400">
+              {busquedaTexto
+                ? `No se encontraron gastos para "${busquedaTexto}"`
+                : "No hay gastos registrados con los filtros seleccionados"}
+            </p>
+            {busquedaTexto && (
+              <button
+                onClick={limpiarBuscador}
+                className="mt-2 text-sm text-blue-500 hover:text-blue-700"
+              >
+                Limpiar búsqueda
+              </button>
+            )}
+          </div>
         ) : (
           <div className="space-y-2 max-h-96 overflow-y-auto">
             {gastos.map((gasto) => {
               const colorStyle = getColorFormaPago(
                 gasto.forma_pago || "Efectivo",
               );
+              // NUEVO: Resaltar texto de búsqueda en la descripción
+              const resaltarTexto = (texto) => {
+                if (!busquedaTexto.trim()) return texto;
+                const regex = new RegExp(
+                  `(${busquedaTexto.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`,
+                  "gi",
+                );
+                const partes = texto.split(regex);
+                return partes.map((parte, i) =>
+                  regex.test(parte) ? (
+                    <mark
+                      key={i}
+                      className="bg-yellow-200 dark:bg-yellow-800 text-gray-900 dark:text-white px-0.5 rounded"
+                    >
+                      {parte}
+                    </mark>
+                  ) : (
+                    parte
+                  ),
+                );
+              };
+
               return (
                 <div
                   key={gasto.id}
@@ -566,10 +716,10 @@ export default function ListaGastos({
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
                       <span className="font-semibold text-gray-800 dark:text-gray-400">
-                        {gasto.descripcion}
+                        {resaltarTexto(gasto.descripcion)}
                       </span>
-                      <span className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600">
-                        {gasto.categoria}
+                      <span className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded dark:bg-gray-700 dark:text-gray-300">
+                        {resaltarTexto(gasto.categoria)}
                       </span>
                       <span
                         className="text-xs px-2 py-1 rounded font-medium"
@@ -578,7 +728,7 @@ export default function ListaGastos({
                           color: colorStyle.text,
                         }}
                       >
-                        💳 {gasto.forma_pago || "Efectivo"}
+                        💳 {resaltarTexto(gasto.forma_pago || "Efectivo")}
                       </span>
                     </div>
                     <div className="text-sm text-gray-500 dark:text-gray-400">
@@ -613,7 +763,7 @@ export default function ListaGastos({
         )}
       </div>
 
-      {/* Modal de Edición */}
+      {/* Modal de Edición (sin cambios) */}
       {mostrarModalEdicion && editandoGasto && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
