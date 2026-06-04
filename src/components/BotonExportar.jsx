@@ -2,7 +2,7 @@ import { useState } from "react";
 import { supabase } from "../config/supabase";
 import Papa from "papaparse";
 
-export default function BotonExportar({ filtros }) {
+export default function BotonExportar({ filtros, onError, onSuccess }) {
   const [exportando, setExportando] = useState(false);
 
   const formatearFecha = (fechaString) => {
@@ -31,13 +31,13 @@ export default function BotonExportar({ filtros }) {
 
       if (error) {
         console.error("Error al cargar datos:", error);
-        alert("Error al cargar los datos para exportar");
+        onError("Error al cargar los datos para exportar");
         setExportando(false);
         return;
       }
 
       if (!data || data.length === 0) {
-        alert("No hay datos para exportar");
+        onError("No hay datos para exportar");
         setExportando(false);
         return;
       }

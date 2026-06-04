@@ -3,18 +3,31 @@ import FormularioGasto from "./components/FormularioGasto";
 import ListaGastos from "./components/ListaGastos";
 import GraficosEstadisticos from "./components/GraficosEstadisticos";
 import ToggleModoOscuro from "./components/ToggleModoOscuro";
+import { useToast } from "./hooks/useToast";
+import Toast from "./components/Toast";
 
 function App() {
   const [recargarLista, setRecargarLista] = useState(0);
   const [recargarGraficos, setRecargarGraficos] = useState(0);
+  const { toast, showToast, hideToast } = useToast();
 
   const handleGastoAgregado = () => {
     setRecargarLista((prev) => prev + 1);
     setRecargarGraficos((prev) => prev + 1);
+    showToast("Gasto agregado correctamente", "success");
   };
 
   const handleGastoEliminado = () => {
     setRecargarGraficos((prev) => prev + 1);
+    showToast("Gasto eliminado correctamente", "success");
+  };
+
+  const handleGastoEditado = () => {
+    showToast("Gasto editado correctamente", "success");
+  };
+
+  const handleError = (mensaje) => {
+    showToast(mensaje, "error");
   };
 
   return (
@@ -32,7 +45,10 @@ function App() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
-            <FormularioGasto onGastoAgregado={handleGastoAgregado} />
+            <FormularioGasto
+              onGastoAgregado={handleGastoAgregado}
+              onError={handleError}
+            />
           </div>
           <div>
             <div key={recargarGraficos}>
@@ -42,9 +58,16 @@ function App() {
         </div>
 
         <div className="mt-6" key={recargarLista}>
-          <ListaGastos onGastoEliminado={handleGastoEliminado} />
+          <ListaGastos
+            onGastoEliminado={handleGastoEliminado}
+            onGastoEditado={handleGastoEditado}
+            onError={handleError}
+          />
         </div>
       </div>
+      {toast && (
+        <Toast message={toast.message} type={toast.type} onClose={hideToast} />
+      )}
     </div>
   );
 }

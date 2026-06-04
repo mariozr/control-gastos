@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../config/supabase";
 import { formatearMonto } from "../utils/formatearMonto";
+import { useToast } from "../hooks/useToast";
 
 // Colores predefinidos para elegir
 const COLOR_PRESETS = [
@@ -16,7 +17,7 @@ const COLOR_PRESETS = [
   { nombre: "Cian", valor: "#06B6D4" },
 ];
 
-export default function FormularioGasto({ onGastoAgregado }) {
+export default function FormularioGasto({ onGastoAgregado, onError }) {
   const [formData, setFormData] = useState({
     descripcion: "",
     monto: "",
@@ -33,6 +34,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
   const [colorNuevaFormaPago, setColorNuevaFormaPago] = useState("#10B981");
   const [mostrarInputNueva, setMostrarInputNueva] = useState(false);
   const [mostrarInputNuevaPago, setMostrarInputNuevaPago] = useState(false);
+  const { toast, showToast, hideToast } = useToast();
 
   const cargarCategorias = async () => {
     try {
@@ -132,7 +134,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
 
   const agregarNuevaCategoria = async () => {
     if (nuevaCategoria.trim() === "") {
-      alert("Por favor ingresa un nombre para la categoría");
+      onError("Por favor ingresa un nombre para la categoría");
       return;
     }
 
@@ -141,7 +143,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
         (cat) => cat.toLowerCase() === nuevaCategoria.toLowerCase(),
       )
     ) {
-      alert("Esta categoría ya existe");
+      onError("Esta categoría ya existe");
       return;
     }
 
@@ -152,20 +154,23 @@ export default function FormularioGasto({ onGastoAgregado }) {
       .insert([{ nombre: nuevaCategoria }]);
 
     if (error) {
-      alert("Error al agregar categoría: " + error.message);
+      onError("Error al agregar categoría: " + error.message);
     } else {
       await cargarCategorias();
       setFormData({ ...formData, categoria: nuevaCategoria });
       setNuevaCategoria("");
       setMostrarInputNueva(false);
-      alert(`Categoría "${nuevaCategoria}" agregada correctamente`);
+      showToast(
+        `Categoría "${nuevaCategoria}" agregada correctamente`,
+        "success",
+      );
     }
     setLoading(false);
   };
 
   const agregarNuevaFormaPago = async () => {
     if (nuevaFormaPago.trim() === "") {
-      alert("Por favor ingresa un nombre para la forma de pago");
+      onError("Por favor ingresa un nombre para la forma de pago");
       return;
     }
 
@@ -174,7 +179,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
         (fp) => fp.nombre.toLowerCase() === nuevaFormaPago.toLowerCase(),
       )
     ) {
-      alert("Esta forma de pago ya existe");
+      onError("Esta forma de pago ya existe");
       return;
     }
 
@@ -188,14 +193,17 @@ export default function FormularioGasto({ onGastoAgregado }) {
     ]);
 
     if (error) {
-      alert("Error al agregar forma de pago: " + error.message);
+      onError("Error al agregar forma de pago: " + error.message);
     } else {
       await cargarFormasPago();
       setFormData({ ...formData, forma_pago: nuevaFormaPago });
       setNuevaFormaPago("");
       setColorNuevaFormaPago("#10B981");
       setMostrarInputNuevaPago(false);
-      alert(`Forma de pago "${nuevaFormaPago}" agregada correctamente`);
+      showToast(
+        `Forma de pago "${nuevaFormaPago}" agregada correctamente`,
+        "success",
+      );
     }
     setLoading(false);
   };
@@ -205,19 +213,19 @@ export default function FormularioGasto({ onGastoAgregado }) {
     setLoading(true);
 
     if (!formData.descripcion.trim()) {
-      alert("Por favor ingresa una descripción");
+      onError("Por favor ingresa una descripción");
       setLoading(false);
       return;
     }
 
     if (parseFloat(formData.monto) <= 0) {
-      alert("Por favor ingresa un monto válido");
+      onError("Por favor ingresa un monto válido");
       setLoading(false);
       return;
     }
 
     if (!formData.categoria) {
-      alert("Por favor selecciona una categoría");
+      onError("Por favor selecciona una categoría");
       setLoading(false);
       return;
     }
@@ -237,7 +245,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
 
     if (error) {
       console.error("Error completo:", error);
-      alert("Error al agregar gasto: " + error.message);
+      onError("Error al agregar gasto: " + error.message);
     } else {
       setFormData({
         descripcion: "",
@@ -247,7 +255,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
         fecha: new Date().toISOString().split("T")[0],
       });
       onGastoAgregado(data[0]);
-      alert("Gasto agregado correctamente");
+      showToast("Gasto agregado correctamente", "success");
     }
     setLoading(false);
   };

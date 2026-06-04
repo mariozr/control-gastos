@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../config/supabase";
 
-export default function GestionCategorias({ onCategoriaCambiada }) {
+export default function GestionCategorias({
+  onCategoriaCambiada,
+  onError,
+  onSuccess,
+}) {
   const [categorias, setCategorias] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [nuevaCategoria, setNuevaCategoria] = useState({
@@ -27,7 +31,7 @@ export default function GestionCategorias({ onCategoriaCambiada }) {
 
   const agregarCategoria = async () => {
     if (!nuevaCategoria.nombre.trim()) {
-      alert("El nombre de la categoría es requerido");
+      onError("El nombre de la categoría es requerido");
       return;
     }
 
@@ -37,13 +41,13 @@ export default function GestionCategorias({ onCategoriaCambiada }) {
       .insert([nuevaCategoria]);
 
     if (error) {
-      alert("Error al agregar categoría: " + error.message);
+      onError("Error al agregar categoría: " + error.message);
     } else {
       await cargarCategorias();
       setNuevaCategoria({ nombre: "", color: "#8884D8" });
       setMostrarModal(false);
       if (onCategoriaCambiada) onCategoriaCambiada();
-      alert("Categoría agregada correctamente");
+      if (onSuccess) onSuccess("Categoría agregada correctamente");
     }
     setLoading(false);
   };
@@ -53,7 +57,7 @@ export default function GestionCategorias({ onCategoriaCambiada }) {
       const { error } = await supabase.from("categorias").delete().eq("id", id);
 
       if (error) {
-        alert("Error al eliminar categoría: " + error.message);
+        onError("Error al eliminar categoría: " + error.message);
       } else {
         await cargarCategorias();
         if (onCategoriaCambiada) onCategoriaCambiada();

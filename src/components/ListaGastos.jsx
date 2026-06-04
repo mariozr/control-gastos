@@ -2,8 +2,13 @@ import { useEffect, useState } from "react";
 import { supabase } from "../config/supabase";
 import { formatearMonto } from "../utils/formatearMonto";
 import BotonExportar from "./BotonExportar";
+import { useToast } from "../hooks/useToast";
 
-export default function ListaGastos({ onGastoEliminado }) {
+export default function ListaGastos({
+  onGastoEliminado,
+  onGastoEditado,
+  onError,
+}) {
   const [gastos, setGastos] = useState([]);
   const [total, setTotal] = useState(0);
   const [totalMensual, setTotalMensual] = useState(0);
@@ -32,6 +37,7 @@ export default function ListaGastos({ onGastoEliminado }) {
     fechaFin: "",
   });
   const [isMobile, setIsMobile] = useState(false);
+  const { toast, showToast, hideToast } = useToast();
 
   // Estados para edición
   const [editandoGasto, setEditandoGasto] = useState(null);
@@ -279,7 +285,8 @@ export default function ListaGastos({ onGastoEliminado }) {
     if (confirm("¿Estás seguro de eliminar este gasto?")) {
       const { error } = await supabase.from("gastos").delete().eq("id", id);
       if (error) {
-        alert("Error al eliminar: " + error.message);
+        /* alert("Error al eliminar: " + error.message); */
+        onError("Error al eliminar: " + error.message);
       } else {
         cargarGastos();
         if (onGastoEliminado) {
@@ -303,12 +310,14 @@ export default function ListaGastos({ onGastoEliminado }) {
 
   const guardarEdicion = async () => {
     if (!editandoGasto.descripcion.trim()) {
-      alert("Por favor ingresa una descripción");
+      /* alert("Por favor ingresa una descripción"); */
+      onError("Por favor ingresa una descripción");
       return;
     }
 
     if (parseFloat(editandoGasto.monto) <= 0) {
-      alert("Por favor ingresa un monto válido");
+      /* alert("Por favor ingresa un monto válido"); */
+      onError("Por favor ingresa un monto válido");
       return;
     }
 
@@ -327,15 +336,14 @@ export default function ListaGastos({ onGastoEliminado }) {
 
     if (error) {
       console.error("Error al editar:", error);
-      alert("Error al editar gasto: " + error.message);
+      /* alert("Error al editar gasto: " + error.message); */
+      onError("Error al editar gasto: " + error.message);
     } else {
-      alert("Gasto editado correctamente");
+      /* alert("Gasto editado correctamente"); */
+      onGastoEditado("Gasto editado correctamente", "success");
       setMostrarModalEdicion(false);
       setEditandoGasto(null);
       cargarGastos();
-      if (onGastoEliminado) {
-        onGastoEliminado();
-      }
     }
     setEditando(false);
   };

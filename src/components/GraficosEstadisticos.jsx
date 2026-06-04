@@ -27,7 +27,7 @@ const COLORS = [
   "#96CEB4",
 ];
 
-export default function GraficosEstadisticos() {
+export default function GraficosEstadisticos({ onError }) {
   const [gastosPorCategoria, setGastosPorCategoria] = useState([]);
   const [gastosPorMes, setGastosPorMes] = useState([]);
   const [gastosPorFormaPago, setGastosPorFormaPago] = useState([]);
@@ -72,7 +72,7 @@ export default function GraficosEstadisticos() {
 
     if (error) {
       console.error("Error:", error);
-      alert("Error al cargar datos para gráficos: " + error.message);
+      onError("Error al cargar datos para gráficos: " + error.message);
       setLoading(false);
       return;
     }
