@@ -314,16 +314,18 @@ export default function GraficosEstadisticos() {
 
   if (loading) {
     return (
-      <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
-        <p className="text-center text-gray-500">Cargando estadísticas...</p>
+      <div className="bg-white p-4 md:p-6 rounded-lg shadow-md dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500">
+        <p className="text-center text-gray-500 dark:text-gray-400 dark:focus:ring-blue-500">
+          Cargando estadísticas...
+        </p>
       </div>
     );
   }
 
   if (gastosPorCategoria.length === 0 && filtroMes !== "todos") {
     return (
-      <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
-        <p className="text-center text-gray-500 text-sm md:text-base">
+      <div className="bg-white p-4 md:p-6 rounded-lg shadow-md dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500">
+        <p className="text-center text-gray-500 text-sm md:text-base dark:text-gray-400 dark:focus:ring-blue-500">
           No hay gastos en el período seleccionado.
         </p>
       </div>
@@ -332,8 +334,8 @@ export default function GraficosEstadisticos() {
 
   if (gastosPorCategoria.length === 0) {
     return (
-      <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
-        <p className="text-center text-gray-500 text-sm md:text-base">
+      <div className="bg-white p-4 md:p-6 rounded-lg shadow-md dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500">
+        <p className="text-center text-gray-500 text-sm md:text-base dark:text-gray-400 dark:focus:ring-blue-500">
           No hay suficientes datos para mostrar gráficos. Agrega algunos gastos
           primero.
         </p>
@@ -342,9 +344,9 @@ export default function GraficosEstadisticos() {
   }
 
   return (
-    <div className="bg-white p-4 md:p-6 rounded-lg shadow-md mb-6">
+    <div className="bg-white p-4 md:p-6 rounded-lg shadow-md mb-6 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
-        <h2 className="text-xl md:text-2xl font-bold text-gray-800">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-400">
           Estadísticas
         </h2>
 
@@ -357,7 +359,7 @@ export default function GraficosEstadisticos() {
                 setMesSeleccionado("");
               }
             }}
-            className="px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
           >
             <option value="todos">Todos los períodos</option>
             <option value="mesActual">Mes actual</option>
@@ -596,8 +598,8 @@ export default function GraficosEstadisticos() {
       )}
 
       {/* Resumen responsive */}
-      <div className="mt-6 p-3 md:p-4 bg-gray-50 rounded-lg">
-        <h3 className="font-semibold text-gray-700 mb-2 text-sm md:text-base">
+      <div className="mt-6 p-3 md:p-4 bg-gray-50 rounded-lg dark:bg-gray-700">
+        <h3 className="font-semibold text-gray-700 mb-2 text-sm md:text-base dark:text-gray-300">
           Resumen
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">

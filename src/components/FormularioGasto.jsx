@@ -269,13 +269,15 @@ export default function FormularioGasto({ onGastoAgregado }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white p-6 rounded-lg shadow-md mb-6"
+      className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-6"
     >
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Nuevo Gasto</h2>
+      <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">
+        Nuevo Gasto
+      </h2>
 
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
             Descripción
           </label>
           <input
@@ -284,13 +286,13 @@ export default function FormularioGasto({ onGastoAgregado }) {
             value={formData.descripcion}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white dark:border-gray-600"
             placeholder="Ej: Compra supermercado"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
             Monto
           </label>
           <input
@@ -301,7 +303,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
             required
             step="0.01"
             min="0.01"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 text-gray-900 dark:text-white dark:border-gray-600"
             placeholder="0.00"
           />
           {formData.monto && parseFloat(formData.monto) > 0 && (
@@ -313,7 +315,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
 
         {/* Categoría con botón + a la derecha */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
             Categoría
           </label>
 
@@ -325,7 +327,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
                   value={nuevaCategoria}
                   onChange={(e) => setNuevaCategoria(e.target.value)}
                   placeholder="Nueva categoría"
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   autoFocus
                 />
                 <button
@@ -355,7 +357,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
                 value={formData.categoria}
                 onChange={handleChange}
                 required
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               >
                 <option value="">Seleccionar categoría</option>
                 {categorias.map((cat) => (
@@ -378,7 +380,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
 
         {/* Forma de Pago con botón + a la derecha */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
             Forma de Pago
           </label>
 
@@ -390,7 +392,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
                   value={nuevaFormaPago}
                   onChange={(e) => setNuevaFormaPago(e.target.value)}
                   placeholder="Nueva forma de pago"
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   autoFocus
                 />
                 <button
@@ -416,7 +418,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
 
               {/* Selector de color para nueva forma de pago */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
                   Color de la forma de pago
                 </label>
                 <div className="flex gap-2 items-center">
@@ -424,9 +426,11 @@ export default function FormularioGasto({ onGastoAgregado }) {
                     type="color"
                     value={colorNuevaFormaPago}
                     onChange={(e) => setColorNuevaFormaPago(e.target.value)}
-                    className="w-12 h-10 rounded border border-gray-300 cursor-pointer"
+                    className="w-12 h-10 rounded border border-gray-300 cursor-pointer dark:bg-gray-800 dark:text-white"
                   />
-                  <span className="text-sm text-gray-500">Elige un color</span>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                    Elige un color
+                  </span>
                 </div>
                 <div className="mt-2 flex gap-1 flex-wrap">
                   {COLOR_PRESETS.map((color) => (
@@ -436,7 +440,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
                       onClick={() => setColorNuevaFormaPago(color.valor)}
                       className={`w-8 h-8 rounded-full border-2 transition ${
                         colorNuevaFormaPago === color.valor
-                          ? "border-gray-800 scale-110"
+                          ? "border-gray-800 scale-110 dark:border-white"
                           : "border-gray-300"
                       }`}
                       style={{ backgroundColor: color.valor }}
@@ -453,7 +457,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
                   name="forma_pago"
                   value={formData.forma_pago}
                   onChange={handleChange}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   style={{
                     color: getColorFormaPago(formData.forma_pago),
                     fontWeight: "500",
@@ -499,7 +503,7 @@ export default function FormularioGasto({ onGastoAgregado }) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-400">
             Fecha
           </label>
           <input
@@ -508,14 +512,14 @@ export default function FormularioGasto({ onGastoAgregado }) {
             value={formData.fecha}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
           />
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition disabled:bg-blue-300 disabled:cursor-not-allowed"
+          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition disabled:bg-blue-300 disabled:cursor-not-allowed dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700 dark:disabled:bg-blue-300 dark:disabled:cursor-not-allowed"
         >
           {loading ? "Agregando..." : "Agregar Gasto"}
         </button>

@@ -118,7 +118,7 @@ export default function BotonExportar({ filtros }) {
     <button
       onClick={cargarDatosParaExportar}
       disabled={exportando}
-      className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition flex items-center gap-2 text-sm w-full sm:w-auto justify-center"
+      className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition flex items-center gap-2 text-sm w-full sm:w-auto justify-center dark:bg-green-700 dark:hover:bg-green-600"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

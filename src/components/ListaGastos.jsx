@@ -363,18 +363,20 @@ export default function ListaGastos({ onGastoEliminado }) {
 
   return (
     <>
-      <div className="bg-white p-6 rounded-lg shadow-md">
+      <div className="bg-white dark:bg-gray-800 dark:text-white p-6 rounded-lg shadow-md">
         {/* <div className="flex justify-between items-center mb-4"> */}
         <div className="mb-4">
           <div className="flex justify-between items-start">
-            <h2 className="text-2xl font-bold text-gray-800">Gastos</h2>
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+              Gastos
+            </h2>
             <div className="text-right">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 {mostrarTotalMensual
                   ? "Total del mes"
                   : "Total (filtro aplicado)"}
               </p>
-              <p className="text-2xl font-bold text-red-600">
+              <p className="text-2xl font-bold text-red-600 dark:text-red-400">
                 {formatearMonto(mostrarTotalMensual ? totalMensual : total)}
               </p>
             </div>
@@ -387,7 +389,7 @@ export default function ListaGastos({ onGastoEliminado }) {
 
         <div className="space-y-4 mb-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
               Categoría
             </label>
             <select
@@ -405,7 +407,7 @@ export default function ListaGastos({ onGastoEliminado }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
               Forma de Pago
             </label>
             <select
@@ -423,7 +425,7 @@ export default function ListaGastos({ onGastoEliminado }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
               Período de tiempo
             </label>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
@@ -432,7 +434,7 @@ export default function ListaGastos({ onGastoEliminado }) {
                 className={`px-3 py-2 rounded-md transition ${
                   filtroTiempo === "todos"
                     ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-200 dark:text-gray-700 dark:hover:bg-gray-300"
                 }`}
               >
                 Mes actual
@@ -442,7 +444,7 @@ export default function ListaGastos({ onGastoEliminado }) {
                 className={`px-3 py-2 rounded-md transition ${
                   filtroTiempo === "semana"
                     ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-200 dark:text-gray-700 dark:hover:bg-gray-300"
                 }`}
               >
                 Por Semana
@@ -452,7 +454,7 @@ export default function ListaGastos({ onGastoEliminado }) {
                 className={`px-3 py-2 rounded-md transition ${
                   filtroTiempo === "mes"
                     ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-200 dark:text-gray-700 dark:hover:bg-gray-300"
                 }`}
               >
                 Por Mes
@@ -462,7 +464,7 @@ export default function ListaGastos({ onGastoEliminado }) {
                 className={`px-3 py-2 rounded-md transition ${
                   filtroTiempo === "personalizado"
                     ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-200 dark:text-gray-700 dark:hover:bg-gray-300"
                 }`}
               >
                 Personalizado
@@ -473,7 +475,7 @@ export default function ListaGastos({ onGastoEliminado }) {
               <select
                 value={semanaSeleccionada}
                 onChange={(e) => setSemanaSeleccionada(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
               >
                 <option value="">Seleccionar semana</option>
                 {fechasDisponibles.semanas.map((semana) => (
@@ -488,7 +490,7 @@ export default function ListaGastos({ onGastoEliminado }) {
               <select
                 value={mesSeleccionado}
                 onChange={(e) => setMesSeleccionado(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500 dark:border-gray-200"
               >
                 <option value="">Seleccionar mes</option>
                 {fechasDisponibles.meses.map((mesKey) => (
@@ -503,31 +505,31 @@ export default function ListaGastos({ onGastoEliminado }) {
               <div className="space-y-3">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-400">
                       Fecha inicio
                     </label>
                     <input
                       type="date"
                       value={fechaInicio}
                       onChange={(e) => setFechaInicio(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-400">
                       Fecha fin
                     </label>
                     <input
                       type="date"
                       value={fechaFin}
                       onChange={(e) => setFechaFin(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
                     />
                   </div>
                 </div>
                 <button
                   onClick={limpiarFiltroPersonalizado}
-                  className="w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600 transition"
+                  className="w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600 transition dark:bg-gray-200 dark:text-gray-700 dark:hover:bg-gray-300"
                 >
                   Limpiar filtros
                 </button>
@@ -551,14 +553,14 @@ export default function ListaGastos({ onGastoEliminado }) {
               return (
                 <div
                   key={gasto.id}
-                  className="flex justify-between items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50"
+                  className="flex justify-between items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 dark:bg-gray-200 dark:text-gray-700 dark:hover:bg-gray-300"
                 >
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <span className="font-semibold text-gray-800">
+                      <span className="font-semibold text-gray-800 dark:text-gray-400">
                         {gasto.descripcion}
                       </span>
-                      <span className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded">
+                      <span className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded dark:bg-gray-200 dark:text-gray-700 dark:hover:bg-gray-300">
                         {gasto.categoria}
                       </span>
                       <span
@@ -571,25 +573,25 @@ export default function ListaGastos({ onGastoEliminado }) {
                         💳 {gasto.forma_pago || "Efectivo"}
                       </span>
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
                       {formatearFecha(gasto.fecha)}
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-lg font-bold text-red-600">
+                    <div className="text-lg font-bold text-red-600 dark:text-red-400">
                       {formatearMonto(gasto.monto)}
                     </div>
                     <div className="flex gap-2 justify-end mt-1">
                       <button
                         onClick={() => abrirModalEdicion(gasto)}
-                        className="text-blue-500 hover:text-blue-700 text-sm"
+                        className="text-blue-500 hover:text-blue-700 text-sm dark:text-blue-400 dark:hover:text-blue-600"
                         title="Editar"
                       >
                         ✏️ Editar
                       </button>
                       <button
                         onClick={() => eliminarGasto(gasto.id)}
-                        className="text-red-500 hover:text-red-700 text-sm"
+                        className="text-red-500 hover:text-red-700 text-sm dark:text-red-400 dark:hover:text-red-600"
                         title="Eliminar"
                       >
                         🗑️ Eliminar
@@ -605,16 +607,18 @@ export default function ListaGastos({ onGastoEliminado }) {
 
       {/* Modal de Edición */}
       {mostrarModalEdicion && editandoGasto && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500">
             <div className="flex justify-between items-center p-4 border-b">
-              <h3 className="text-xl font-bold text-gray-800">Editar Gasto</h3>
+              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-400">
+                Editar Gasto
+              </h3>
               <button
                 onClick={() => {
                   setMostrarModalEdicion(false);
                   setEditandoGasto(null);
                 }}
-                className="text-gray-500 hover:text-gray-700 text-2xl"
+                className="text-gray-500 hover:text-gray-700 text-2xl dark:text-gray-400 dark:hover:text-gray-600"
               >
                 ×
               </button>
@@ -630,7 +634,7 @@ export default function ListaGastos({ onGastoEliminado }) {
                   name="descripcion"
                   value={editandoGasto.descripcion}
                   onChange={handleEditChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
                   placeholder="Ej: Compra supermercado"
                 />
               </div>
@@ -646,7 +650,7 @@ export default function ListaGastos({ onGastoEliminado }) {
                   onChange={handleEditChange}
                   step="0.01"
                   min="0.01"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
                   placeholder="0.00"
                 />
               </div>
@@ -659,7 +663,7 @@ export default function ListaGastos({ onGastoEliminado }) {
                   name="categoria"
                   value={editandoGasto.categoria}
                   onChange={handleEditChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
                 >
                   {categoriasDisponibles.map((cat) => (
                     <option key={cat} value={cat}>
@@ -677,7 +681,7 @@ export default function ListaGastos({ onGastoEliminado }) {
                   name="forma_pago"
                   value={editandoGasto.forma_pago}
                   onChange={handleEditChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
                 >
                   {formasPagoDisponibles.map((fp) => (
                     <option key={fp} value={fp}>
@@ -696,7 +700,7 @@ export default function ListaGastos({ onGastoEliminado }) {
                   name="fecha"
                   value={editandoGasto.fecha}
                   onChange={handleEditChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
                 />
               </div>
             </div>
@@ -705,7 +709,7 @@ export default function ListaGastos({ onGastoEliminado }) {
               <button
                 onClick={guardarEdicion}
                 disabled={editando}
-                className="flex-1 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:bg-blue-300"
+                className="flex-1 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:bg-blue-300 dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
               >
                 {editando ? "Guardando..." : "Guardar cambios"}
               </button>
@@ -714,7 +718,7 @@ export default function ListaGastos({ onGastoEliminado }) {
                   setMostrarModalEdicion(false);
                   setEditandoGasto(null);
                 }}
-                className="flex-1 bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600 transition"
+                className="flex-1 bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600 transition dark:bg-gray-200 dark:text-gray-700 dark:focus:ring-blue-500"
               >
                 Cancelar
               </button>
